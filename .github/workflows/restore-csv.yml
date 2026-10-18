@@ -1,0 +1,25 @@
+name: Restore fuel prices CSV
+
+on:
+  push:
+    paths:
+      - .github/workflows/restore-csv.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Revert the accidental CSV deletion
+        run: |
+          git config user.name "chfaiza354"
+          git config user.email "chfaiza354@users.noreply.github.com"
+          git revert --no-edit 6767fc9
+          git push
